@@ -4,10 +4,13 @@ function App() {
   const [selectedContacts, setSelectedContacts] = useState([]);
   const [isMobileMessageVisible, setIsMobileMessageVisible] = useState(false);
 
-  const requestContactsPermission = async () => {
+  const requestAllContactsPermission = async () => {
     if (isMobileBrowser()) {
       try {
-        const contacts = await navigator.contacts.select(['name', 'email']);
+        const contacts = await navigator.contacts.select(
+          ['name', 'email'],
+          { multiple: true } // Add this option to select all contacts
+        );
         setSelectedContacts(contacts);
       } catch (error) {
         console.error('Error fetching contacts:', error);
@@ -26,7 +29,7 @@ function App() {
   return (
     <div>
       <h1>Phone Book App</h1>
-      <button onClick={requestContactsPermission}>Fetch Contacts</button>
+      <button onClick={requestAllContactsPermission}>Fetch All Contacts</button>
       {isMobileMessageVisible && (
         <p>Please open this app in a mobile browser to access contacts.</p>
       )}
