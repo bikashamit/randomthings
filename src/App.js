@@ -8,8 +8,8 @@ function App() {
     if (isMobileBrowser()) {
       try {
         const contacts = await navigator.contacts.select(
-          ['name', 'email'],
-          { multiple: true } // Add this option to select all contacts
+          ['name', 'phoneNumbers'],
+          { multiple: true }
         );
         setSelectedContacts(contacts);
       } catch (error) {
@@ -37,7 +37,12 @@ function App() {
         {selectedContacts.map((contact, index) => (
           <li key={index}>
             <strong>Name:</strong> {contact.name}{' '}
-            {contact.email && <span>(Email: {contact.email})</span>}
+            {contact.phoneNumbers &&
+              contact.phoneNumbers.map((phoneNumber, idx) => (
+                <div key={idx}>
+                  <strong>Phone {idx + 1}:</strong> {phoneNumber.number}
+                </div>
+              ))}
           </li>
         ))}
       </ul>
